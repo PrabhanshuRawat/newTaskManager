@@ -1,0 +1,46 @@
+.landing-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+  }
+  
+  .heading {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 50px; /* Adjust the top margin as needed */
+    text-align: center;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 30px; /* Adjust the top margin as needed */
+  }
+  
+  .login-button,
+  .register-button {
+    padding: 15px 30px; /* Adjust padding as needed */
+    border-radius: 0.5rem;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .login-button {
+    background-color: #007bff;
+  }
+  
+  .register-button {
+    background-color: #6c757d;
+  }
+  
+  .login-button:hover,
+  .register-button:hover {
+    background-color: #0056b3; /* Darker hover color for better contrast */
+  }
