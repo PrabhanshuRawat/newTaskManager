@@ -12,7 +12,7 @@ const Register = () => {
     try {
       await register(formData);
       setError('');
-      window.location.href = '/tasks';
+      window.location.href = '../Dashboard';
     } catch (err) {
       setError('Failed to register. Try again.');
     }
