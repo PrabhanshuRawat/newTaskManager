@@ -81,10 +81,7 @@ const authMiddleware = require('../middleware/auth');
 // @desc    Register a user
 // @access  Public
 router.post(
-  '/register', 
-  registerValidation, 
-  validateRequest, 
-  registerUser
+  '/register', registerUser
 );
 
 // @route   POST /api/users/login
