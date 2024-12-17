@@ -148,7 +148,7 @@ import { useAuth } from '../../context/AuthContext'; // Correct usage of useAuth
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -174,7 +174,7 @@ const Sidebar = () => {
         <div className="flex items-center">
           {isOpen && (
             <div className="flex items-center space-x-3">
-              <span className="text-lg font-semibold">{user?.name || 'User'}</span>
+              <span className="text-lg font-semibold">User</span> {/* Changed to "User" */}
             </div>
           )}
         </div>

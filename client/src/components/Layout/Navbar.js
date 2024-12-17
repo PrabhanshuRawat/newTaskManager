@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate for 
 import { AuthContext } from '../../context/AuthContext'; // Import the AuthContext
 
 const Navbar = () => {
-  const { isAuthenticated, logout, user } = useContext(AuthContext); // Access auth state and logout method
+  const { isAuthenticated, logout } = useContext(AuthContext); // Removed user as we don't need it
   const navigate = useNavigate(); // Hook for programmatic navigation
 
   const handleLogout = () => {
@@ -21,11 +21,7 @@ const Navbar = () => {
       <div className="navbar-menu flex items-center space-x-4">
         {isAuthenticated ? (
           <>
-            {user && (
-              <span className="text-sm">
-                Welcome, <strong>{user.name}</strong>
-              </span>
-            )}
+            <span className="text-sm">Welcome, <strong>User</strong></span> {/* Replaced username with 'User' */}
             <Link
               to="/dashboard"
               className="hover:underline text-sm bg-blue-600 px-4 py-2 rounded-md"
