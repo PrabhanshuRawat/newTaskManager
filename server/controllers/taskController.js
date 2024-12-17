@@ -198,22 +198,25 @@ exports.updateTask = async (req, res) => {
 // Delete task
 exports.deleteTask = async (req, res) => {
   try {
+    // Find task by ID
     const task = await Task.findById(req.params.id);
 
     if (!task) {
-      return res.status(404).json({ msg: 'Task not found' });
+      return res.status(404).json({ message: 'Task not found' });
     }
 
     // Ensure user owns task
     if (task.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'Not authorized' });
+      return res.status(401).json({ message: 'Not authorized' });
     }
 
-    await task.remove();
-    res.json({ msg: 'Task removed' });
+    // Use deleteOne() to delete the task (or you can use findByIdAndDelete)
+    await Task.deleteOne({ _id: req.params.id });
+
+    res.json({ message: 'Task removed successfully' });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error('Error deleting task:', err);
+    res.status(500).json({ message: 'Server error deleting task' });
   }
 };
 
