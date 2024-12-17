@@ -373,7 +373,7 @@ const initialState = {
   loading: true,
   error: null,
   selectedTask: null,
-  pagination: { currentPage: 1, totalPages: 1, totalTasks: 0 } // Ensure this is initialized correctly
+  pagination: { currentPage: 1, totalPages: 1, totalTasks: 0 }, // Ensure this is initialized correctly
 };
 
 // Action types
@@ -477,6 +477,16 @@ export const TaskProvider = ({ children }) => {
     }
   };
 
+  // Fetch task by ID
+  const getTaskById = async (taskId) => {
+    try {
+      const response = await api.get(`/tasks/${taskId}`);
+      return response.data; // Return task data
+    } catch (error) {
+      throw error;
+    }
+  };
+
   // Add a new task to the server
   const createTask = async (taskData) => {
     try {
@@ -492,6 +502,26 @@ export const TaskProvider = ({ children }) => {
       return response.data;
     } catch (error) {
       console.error('Error creating task:', error);
+      throw error;
+    }
+  };
+
+  // Update task by ID
+  const updateTaskById = async (taskId, taskData) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        throw new Error('No authorization token found');
+      }
+  
+      const response = await api.put(`/tasks/${taskId}`, taskData, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+  
+      updateTask(response.data);  // Update the task in the state
+      return response.data;
+    } catch (error) {
+      console.error('Error updating task:', error);
       throw error;
     }
   };
@@ -520,12 +550,13 @@ export const TaskProvider = ({ children }) => {
         ...state,
         fetchTasks,
         createTask,
-        updateTask,
+        updateTaskById,  // Pass updateTaskById to context
         deleteTaskById,
         setLoading,
         setError,
         setSelectedTask,
         setPagination,
+        getTaskById,  // Ensure getTaskById is passed as well
       }}
     >
       {children}
