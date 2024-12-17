@@ -1,0 +1,48 @@
+/* Sidebar Styles */
+.sidebar {
+  background-color: #1a202c;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: width 0.3s ease;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #2d3748;
+}
+
+.sidebar-links a {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: #a0aec0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.sidebar-links a:hover {
+  background-color: #2d3748;
+  color: #fff;
+}
+
+.sidebar-links a span:first-child {
+  margin-right: 1rem;
+}
+
+.logout-button {
+  background-color: #e53e3e;
+  color: #fff;
+  padding: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #c53030;
+}

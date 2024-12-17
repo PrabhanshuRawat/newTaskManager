@@ -208,9 +208,7 @@ exports.registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     // Validate incoming data
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Name, email, and password are required' });
-    }
+    checkMissingFields([name, email, password], res);
 
     if (password.length < 6) {
       return res.status(400).json({ message: 'Password must be at least 6 characters long' });
@@ -244,7 +242,7 @@ exports.registerUser = async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'your_jwt_secret',
+      process.env.JWT_SECRET, // Use the secret from environment
       { expiresIn: '1h' },
       (err, token) => {
         if (err) {
@@ -265,18 +263,16 @@ exports.registerUser = async (req, res) => {
     );
   } catch (error) {
     console.error('Error during user registration:', error);
-
-    if (!res.headersSent) {
-      res.status(500).json({ message: 'Server error during registration' });
-    }
+    res.status(500).json({ message: 'Server error during registration' });
   }
 };
+
 // User login
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if required fields are missing
+    // Check for missing fields
     checkMissingFields([email, password], res);
 
     // Check if user exists
@@ -300,7 +296,7 @@ exports.loginUser = async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'your_jwt_secret',
+      process.env.JWT_SECRET, // Use the secret from environment
       { expiresIn: '1h' },
       (err, token) => {
         if (err) {

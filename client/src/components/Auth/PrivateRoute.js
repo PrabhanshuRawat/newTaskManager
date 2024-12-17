@@ -1,15 +1,15 @@
-// src/components/Auth/PrivateRoute.js
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+  // const { authState } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
-  
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  // if (!authState.isAuthenticated) {
+  //   return <Navigate to="/login" />; // Redirect to login if not authenticated
+  // }
+
+  return children;
 };
 
 export default PrivateRoute;
-

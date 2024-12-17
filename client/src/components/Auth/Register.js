@@ -12,7 +12,7 @@ const Register = () => {
     try {
       await register(formData);
       setError('');
-      window.location.href = '../Dashboard';
+      window.location.href = '/Users/prabhanshurawat/Desktop/TMS/client/src/components/Dashboard.js';
     } catch (err) {
       setError('Failed to register. Try again.');
     }

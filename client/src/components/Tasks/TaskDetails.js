@@ -1,33 +1,43 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { TaskContext } from '../../context/TaskContext';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { taskAPI } from '../../utils/api'; // Make sure the import is correct
 
 const TaskDetails = () => {
-  const { id } = useParams();
-  const { getTaskById } = useContext(TaskContext);
+  const { id } = useParams(); // Get the task ID from the URL params
   const [task, setTask] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Fetch task details by ID
   useEffect(() => {
     const fetchTask = async () => {
-      const fetchedTask = await getTaskById(id);
-      setTask(fetchedTask);
+      try {
+        const fetchedTask = await taskAPI.getTaskById(id); // Call getTaskById here
+        setTask(fetchedTask);
+      } catch (error) {
+        setError('Failed to fetch task');
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchTask();
-  }, [id]);
 
-  if (!task) return <div>Loading...</div>;
+    fetchTask();
+  }, [id]); // This effect runs when the component mounts or the ID changes
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <div className="task-details-container">
-      <h2>{task.title}</h2>
-      <p><strong>Description:</strong> {task.description}</p>
-      <p><strong>Due Date:</strong> {new Date(task.dueDate).toLocaleDateString()}</p>
-      <p><strong>Priority:</strong> {task.priority}</p>
-      <p><strong>Status:</strong> {task.status}</p>
-      <div className="task-details-actions">
-        <Link to={`/task/edit/${task._id}`}>Edit Task</Link>
-        <Link to="/dashboard">Back to Dashboard</Link>
-      </div>
+    <div>
+      {task && (
+        <div>
+          <h1>{task.title}</h1>
+          <p>{task.description}</p>
+          <p>{task.dueDate}</p>
+          <p>{task.priority}</p>
+          {/* Other task details */}
+        </div>
+      )}
     </div>
   );
 };

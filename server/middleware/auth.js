@@ -16,31 +16,77 @@
 // };
 
 // module.exports = { verifyToken };
+
+
+
+
+
+
+
+
+
+
+// const jwt = require('jsonwebtoken');
+// const User = require('../models/User');  // Adjust path as needed
+
+// const authMiddleware = async (req, res, next) => {
+//   const token = req.header('x-auth-token');
+  
+//   if (!token) {
+//     return res.status(401).json({ msg: 'No token, authorization denied' });
+//   }
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);  // Adjust secret
+//     req.user = decoded.user;  // Attach user info to the request
+//     next();  // Pass control to the next middleware or route handler
+//   } catch (err) {
+//     res.status(401).json({ msg: 'Token is not valid' });
+//   }
+// };
+
+// module.exports = authMiddleware;
+
+
+
+
+
+
+
+
+
+
 const jwt = require('jsonwebtoken');
 
-module.exports = function(req, res, next) {
-  // Get token from header
+const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
-  // Check if no token
   if (!token) {
-    return res.status(401).json({ message: 'No token, authorization denied' });
+    return res.status(401).json({ msg: 'No token, authorization denied' });
   }
 
   try {
-    // Verify token
-    const decoded = jwt.verify(
-      token, 
-      process.env.JWT_SECRET || 'your_jwt_secret'
-    );
-
-    // Add user from payload
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Use the secret from env
     req.user = decoded.user;
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Token is not valid' });
+    console.error('Invalid token:', err);
+    res.status(401).json({ msg: 'Token is not valid' });
   }
 };
+
+module.exports = authMiddleware;
+
+
+
+
+
+
+
+
+
+
+
 // const User = require('../models/User');
 // const bcrypt = require('bcryptjs');
 // const jwt = require('jsonwebtoken');

@@ -103,19 +103,20 @@ const Task = require('../models/Task');
 exports.createTask = async (req, res) => {
   try {
     const { title, description, dueDate, priority } = req.body;
-    
+    const userId = req.user.id; // Get the user ID from the authenticated user (from the middleware)
+
     const newTask = new Task({
       title,
       description,
       dueDate,
       priority,
-      user: req.user.id
+      user: userId,  // Save the task under the authenticated user
     });
 
     const task = await newTask.save();
     res.json(task);
   } catch (err) {
-    console.error(err.message);
+    console.error('Error creating task:', err);
     res.status(500).send('Server Error');
   }
 };

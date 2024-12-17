@@ -102,11 +102,11 @@ import PrivateRoute from './components/Auth/PrivateRoute';
 
 function App() {
   return (
-    <AuthProvider>
-      <TaskProvider>
+    <AuthProvider> {/* Wrapping the app with AuthProvider */}
+      <TaskProvider> {/* Wrapping the app with TaskProvider */}
         <Router>
           <div className="App">
-            <Navbar />
+            <Navbar /> {/* Displaying the Navbar */}
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<LandingPage />} />
@@ -117,7 +117,7 @@ function App() {
               <Route 
                 path="/dashboard" 
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute> {/* Protected Route */}
                     <Dashboard />
                   </PrivateRoute>
                 } 
@@ -125,7 +125,7 @@ function App() {
               <Route 
                 path="/tasks" 
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute> {/* Protected Route */}
                     <TaskList />
                   </PrivateRoute>
                 } 
@@ -133,7 +133,7 @@ function App() {
               <Route 
                 path="/tasks/create" 
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute> {/* Protected Route */}
                     <TaskCreate />
                   </PrivateRoute>
                 } 
@@ -141,7 +141,7 @@ function App() {
               <Route 
                 path="/tasks/:id" 
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute> {/* Protected Route */}
                     <TaskDetails />
                   </PrivateRoute>
                 } 
@@ -149,13 +149,13 @@ function App() {
               <Route 
                 path="/tasks/edit/:id" 
                 element={
-                  <PrivateRoute>
+                  <PrivateRoute> {/* Protected Route */}
                     <TaskEdit />
                   </PrivateRoute>
                 } 
               />
 
-              {/* Redirect to dashboard if no match */}
+              {/* Catch-all Route: Redirect to dashboard */}
               <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
           </div>

@@ -112,4 +112,6 @@ router.put(
   updateUserProfile  // Ensure this is the function from the controller
 );
 
+// router.get('/me', auth, getCurrentUser);
+
 module.exports = router;
