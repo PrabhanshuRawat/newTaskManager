@@ -513,12 +513,12 @@ export const TaskProvider = ({ children }) => {
       if (!token) {
         throw new Error('No authorization token found');
       }
-  
+
       const response = await api.put(`/tasks/${taskId}`, taskData, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
-  
-      updateTask(response.data);  // Update the task in the state
+
+      updateTask(response.data); // Update the task in the state
       return response.data;
     } catch (error) {
       console.error('Error updating task:', error);

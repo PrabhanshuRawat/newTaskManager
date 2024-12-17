@@ -124,29 +124,27 @@ exports.createTask = async (req, res) => {
 // Get tasks with pagination
 exports.getAllTasks = async (req, res) => {
   try {
-    const { page = 1, limit = 10, priority, status } = req.query;
-    
-    const query = { user: req.user.id };
-    
-    if (priority) query.priority = priority;
-    if (status) query.status = status;
+    const { page = 1, limit = 10 } = req.query;
+    const sort = { priority: 1 }; // Default sort by priority in ascending order ('Low' < 'Medium' < 'High')
 
-    const tasks = await Task.find(query)
-      .sort({ createdAt: -1 })
-      .limit(limit * 1)
+    const tasks = await Task.find()
+      .sort(sort)
       .skip((page - 1) * limit)
-      .exec();
+      .limit(Number(limit));
 
-    const count = await Task.countDocuments(query);
+    const totalTasks = await Task.countDocuments();
+    const totalPages = Math.ceil(totalTasks / limit);
 
     res.json({
       tasks,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page
+      pagination: {
+        currentPage: Number(page),
+        totalPages,
+        totalTasks
+      }
     });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching tasks' });
   }
 };
 
@@ -169,32 +167,26 @@ exports.getTaskById = async (req, res) => {
 // Update task
 exports.updateTask = async (req, res) => {
   try {
-    const { title, description, dueDate, status, priority } = req.body;
+    const { title, description, dueDate, priority, status } = req.body;
+    const taskId = req.params.id;
 
-    let task = await Task.findById(req.params.id);
-
-    if (!task) {
-      return res.status(404).json({ msg: 'Task not found' });
-    }
-
-    // Ensure user owns task
-    if (task.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'Not authorized' });
-    }
-
-    task = await Task.findByIdAndUpdate(
-      req.params.id,
-      { $set: { title, description, dueDate, status, priority } },
-      { new: true }
+    // Find the task by ID and update it
+    const updatedTask = await Task.findByIdAndUpdate(
+      taskId,
+      { title, description, dueDate, priority, status },
+      { new: true, runValidators: true } // Ensures the updated document is returned
     );
 
-    res.json(task);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    if (!updatedTask) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    res.json(updatedTask);  // Return the updated task data
+  } catch (error) {
+    console.error('Error updating task:', error);
+    res.status(500).json({ message: 'Server error while updating task' });
   }
 };
-
 // Delete task
 exports.deleteTask = async (req, res) => {
   try {

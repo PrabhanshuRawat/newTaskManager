@@ -112,7 +112,7 @@ const authMiddleware = require('../middleware/auth');
 router.post('/', authMiddleware, createTask);
 
 // @route   GET /api/tasks
-// @desc    Get all tasks with pagination
+// @desc    Get all tasks with pagination and sorting by priority
 // @access  Private
 router.get('/', authMiddleware, getAllTasks);
 

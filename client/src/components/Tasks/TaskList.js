@@ -328,28 +328,26 @@
 
 
 
-
-
 import React, { useState, useEffect } from 'react';
-import { useTaskContext } from '../../context/TaskContext';
-import { Link } from 'react-router-dom';
+import { useTaskContext } from '../../context/TaskContext'; // Import the custom hook
+import { Link } from 'react-router-dom'; // Import Link component from react-router-dom
 
 const TaskList = () => {
   const {
     tasks,
     loading,
     error,
-    pagination = { currentPage: 1, totalPages: 1, totalTasks: 0 }, // Default fallback value
+    pagination,
     fetchTasks,
-    deleteTaskById
-  } = useTaskContext();
+    deleteTaskById,  // Ensure deleteTaskById is imported from context
+  } = useTaskContext();  // Use the custom hook to access the context
 
   const [currentPage, setCurrentPage] = useState(pagination.currentPage);
 
   // Fetch tasks whenever the page changes or component mounts
   useEffect(() => {
     if (tasks.length === 0 || currentPage !== pagination.currentPage) {
-      fetchTasks(currentPage);
+      fetchTasks(currentPage); // Use fetchTasks function from context to fetch tasks
     }
   }, [currentPage, tasks, pagination.currentPage, fetchTasks]);
 
